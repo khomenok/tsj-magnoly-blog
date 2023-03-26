@@ -1,0 +1,33 @@
+---
+export interface Props {
+    pdfUrl: string;
+}
+
+const { pdfUrl } = Astro.props;
+---
+
+<div class="pdf-card">
+    <a href={pdfUrl} target="_blank" class="download-link">Cкачать 📁</a>
+    <div class="pdf-iframe">
+        <iframe src={pdfUrl} width="100%" height="100%">
+        </iframe>
+    </div>
+</div>
+<style>
+    .pdf-iframe {
+        margin: 0 -1rem;
+        width: calc(100% + 2rem);
+        aspect-ratio: 2/3;
+    }
+
+    .pdf-iframe iframe {
+        border: none;
+    }
+
+    .download-link {
+        color: #444444;
+        font-size: 1rem;
+        float: right;
+        margin-right: 0.5rem;
+    }
+</style>

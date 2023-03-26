@@ -1,0 +1,43 @@
+---
+import TextCard from "./TextCard.astro";
+export interface Props {
+    title: string;
+    rates: string[];
+    links: {title: string, href: string}[];
+}
+
+const { title, rates, links } = Astro.props;
+---
+
+<TextCard title={title}>
+    <div class="flex">
+        {rates.map(rate => (<code class="code">{rate}</code>))}
+    </div>
+    <div>
+        {links.map((link, idx) => (
+            <>
+                {idx > 0 && '  /  '}
+                <a href="/rates" class="link">2022</a>
+            </>
+        ))}
+    </div>
+</TextCard>
+
+<style>
+    .flex {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.8rem;
+        flex-wrap: wrap;
+        gap: 0.15rem 0.5rem;
+    }
+
+    .code {
+        white-space: nowrap;;
+    }
+
+    .link {
+        color: #444444;
+        white-space: nowrap;
+    }
+</style>

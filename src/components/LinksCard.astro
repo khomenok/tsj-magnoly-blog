@@ -1,0 +1,50 @@
+---
+export interface Props {
+    title: string;
+    links: {title: string; url: string}[];
+}
+
+const { title, links } = Astro.props;
+---
+
+<div class="links-card">
+    {title && (
+            <div class="header">
+                {title}
+            </div>
+    )}
+    <ul class="links">
+        {links.map(link => (
+            <li><a href={link.url}>{link.title}</a></li>
+        ))}
+    </ul>
+</div>
+<style>
+    .links-card {
+        margin: 0;
+        position: absolute;
+        right: -300px;
+        width: 250px;
+        box-sizing: border-box;
+        margin-top: -22px;
+
+        font-size: 1.15rem;
+    }
+
+    .links {
+        margin: 0.5rem 0 0;
+        padding-left: 1rem;
+    }
+
+    .links li {
+        margin-bottom: 0.7rem;
+    }
+
+    .links li a {
+        color: #444444;
+    }
+
+    .header {
+        margin-bottom: 0.7rem;
+    }
+</style>
