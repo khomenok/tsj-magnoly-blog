@@ -4,6 +4,7 @@ export interface PageProps {
     title: string;
     description: string;
     pubDate: string;
+    links?: {title: string, desc?: string, url: string}[];
 }
 
 export const sortByPubDateDesc = (a: MarkdownInstance<PageProps>, b: MarkdownInstance<PageProps>) => {

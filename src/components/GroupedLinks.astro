@@ -6,9 +6,10 @@ import Card from "./Card.astro";
 
 export interface Props {
     items: MarkdownInstance<PageProps>[];
+    showYears: boolean;
 }
 
-const {items } = Astro.props;
+const {items, showYears=true } = Astro.props;
 
 const sortedItems = items.sort(sortByPubDateDesc);
 const groupedItems = groupByYear(sortedItems);
@@ -18,7 +19,7 @@ const sortedYears = Object.keys(groupedItems).sort((a, b) => a < b ? 1 : -1);
 
 {sortedYears.map(year => (
     <div class="year-items">
-        <div class="year">{year}</div>
+        {showYears && (<div class="year">{year}</div>)}
         <ul role="list" class="link-card-grid">
             {groupedItems[year].map(item => (
                 <Card
@@ -39,12 +40,21 @@ const sortedYears = Object.keys(groupedItems).sort((a, b) => a < b ? 1 : -1);
         position: absolute;
         left: -115px;
         width: 100px;
-        text-align: right;;
+        text-align: right;
     }
     .link-card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
         gap: 1rem;
         padding: 0;
+    }
+
+    @media (max-width: 800px) {
+        .year {
+            position: relative;
+            width: unset;
+            left: 0;
+            text-align: left;
+        }
     }
 </style>

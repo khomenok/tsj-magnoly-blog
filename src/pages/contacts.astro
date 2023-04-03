@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MainPageHeader from '../components/MainPageHeader.astro';
+import TextCard from "../components/TextCard.astro";
+
+const news = await Astro.glob('./news/*/*.md');
+
+---
+
+<Layout title="Основные контакты">
+    <main>
+        <MainPageHeader />
+        <h2>Основные телефоны для связи</h2>
+        <TextCard title="ТСЖ">
+            <div class="phone-grid">
+                <div class="phone"><code>8(985)481-99-40</code></div>
+                <div class="content">
+                    Председатель ТСЖ<br />
+                    Гуденко Александр Викторович
+                </div>
+
+                <div class="phone"><code>8(915)119-25-36</code></div>
+                <div class="content">
+                    Комендант дома (домофоны, установка счетчиков)<br />
+                    Белов Андрей Петрович
+                </div>
+
+                <div class="phone"><code>8(905)583-08-24</code></div>
+                <div class="content">
+                    Бухгалтерия<br />
+                    Помещение ТСЖ у 2-го подъезда<br />
+                    Вторник с 18:00 до 20:00
+                </div>
+
+                <div class="phone"><code>8(903)140-48-90</code></div>
+                <div class="content">
+                    Паспортный стол<br />
+                    Помещение ТСЖ у 2-го подъезда<br />
+                    Четверг с 18:00 до 20:00
+                </div>
+            </div>
+        </TextCard>
+        <TextCard title="Экстренные ситуации">
+            <div class="phone-grid">
+                <div class="phone"><code>8(985)473-14-33</code></div><div class="content">Аварийная</div>
+                <div class="phone"><code>8(926)457-34-10</code></div><div class="content">Сантехника</div>
+                <div class="phone"><code>8(495)726-78-60</code></div><div class="content">Электрика</div>
+                <div class="phone"><code>8(906)093-56-08</code></div><div class="content">Лифтовая аварийная</div>
+                <div class="phone"><code>8(495)584-00-00</code></div><div class="content">Круглосуточная аварийная</div>
+            </div>
+        </TextCard>
+        <TextCard title="Остальные службы">
+            <div class="phone-grid">
+                <div class="phone"><code>8(495)583-55-92</code></div>
+                <div class="content">Теплосеть</div>
+
+                <div class="phone"><code>8(495)586-30-16</code></div>
+                <div class="content">Водоканал</div>
+
+                <div class="phone"><code>8(495)586-92-09</code></div>
+                <div class="content">Электросеть</div>
+
+                <div class="phone">
+                    <code>8(495)586-70-31</code>
+                </div>
+                <div class="content">
+                    Энергосбыт<br />
+                    г. Мытищи, ул. Трудовая, д.20а<br />
+                    Для справок: <code class="phone">8(495)586-25-44</code>
+                </div>
+
+                <div class="phone">
+                    <code>8(495)582-25-21</code>
+                </div>
+                <div class="content">
+                    Дежурный участковый<br />
+                    ул. Новая 3-я, д. 17
+                </div>
+
+                <div class="phone">
+                    <code>8(495)583-23-10</code><br />
+                    <code>8(498)687-13-59</code>
+                </div>
+                <div class="content">
+                    Опорный пункт участковых<br />
+                    ул. Шараповская, д. 2/1 подъезд 1<br />
+                    - вторник с 17:00 до 19:00<br />
+                    - четверг с 18:00 до 20:00<br />
+                    - субботу с 10:00 до 13:00<br />
+                </div>
+            </div>
+        </TextCard>
+        <TextCard>
+            <p>
+                Просим всех жильцов при подаче заявок в соответствующие организации и при их невыполнении давать полную информацию председателю ТСЖ «Магнолия» Гуденко Александру Викторовичу письменно или по телефону ТСЖ – <code>8(915)119-25-36</code>.
+            </p>
+            <p>
+                Ремонтные работы по дому проводить в будние дни <code class="green">09.00 до 19.00</code> с перерывом <code class="red">13.00 до 15.00</code>, не нарушая дневной сон детей. В выходные и праздничные дни, шумные работы не проводить.
+            </p>
+        </TextCard>
+    </main>
+</Layout>
+
+<style>
+    h2 {
+        margin-top: 4rem;
+    }
+
+    main {
+        position: relative;
+    }
+
+    .phone-grid {
+        display: grid;
+        grid-template-columns: min-content auto;
+        gap: 0.5rem 0.8rem;
+        align-items: baseline;
+    }
+
+    .phone {
+        white-space: nowrap;
+    }
+
+    .content {
+        line-height: 1.2;
+    }
+
+    code.green {
+        background: #26ff2640;
+        color: green;
+        white-space: nowrap;
+    }
+    code.red {
+        background: #ffd6d6;
+        color: red;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 700px) {
+        .phone-grid {
+            grid-template-columns: 1fr;
+            gap: 0.2rem;
+        }
+
+        .content {
+            margin-bottom: 0.6rem;
+        }
+    }
+</style>

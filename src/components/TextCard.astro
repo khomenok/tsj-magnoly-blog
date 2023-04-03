@@ -1,13 +1,13 @@
 ---
 export interface Props {
     title: string;
-    body: string;
+    isDesktopOnly?: boolean;
 }
 
-const { title, body } = Astro.props;
+const { title, isDesktopOnly = false } = Astro.props;
 ---
 
-<div class="text-card">
+<div class={`text-card ${isDesktopOnly && 'desktop-only'}`}>
     {title && (
         <div class="header">
             {title}
@@ -40,5 +40,11 @@ const { title, body } = Astro.props;
         margin-bottom: 0.3rem;
         color: rgb(var(--accent));
         font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+        .desktop-only {
+            display: none;
+        }
     }
 </style>

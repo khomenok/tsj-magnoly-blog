@@ -16,13 +16,12 @@ const news = await Astro.glob('./news/*/*.md');
 		<LinksCard
 			title="Полезное"
 			links={[
-				{title: 'Собрание 2023', url: 'lal'},
-				{title: 'Шлагбаум', url: 'lal'},
-				{title: 'Основные телефоны', url: 'lal'},
-				{title: 'Решения судов', url: 'lal'},
+				{title: 'Собрание 2023', url: '/meetings/2023'},
+				{title: 'Архив собраний', url: '/meetings'},
+				{title: 'Решения судов', url: '/courts'},
 			]}
 		/>
-		<TextCard>
+		<TextCard isDesktopOnly={true}>
 			ТСЖ Магнолия создано решением общего собрания многоквартирного дома по адресу <code>г. Мытищи, ул. Колпакова, д.40/3</code>.
 		</TextCard>
 		<RatesCard
@@ -46,5 +45,11 @@ const news = await Astro.glob('./news/*/*.md');
 
 	main {
 		position: relative;
+	}
+
+	@media (max-width: 800px) {
+		h2 {
+			margin-top: 2rem;
+		}
 	}
 </style>
