@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MainPageHeader from '../../components/MainPageHeader.astro';
+import GroupedLinks from "../../components/GroupedLinks.astro";
+
+const reports = await Astro.glob('./verendeev/*.mdx');
+
+---
+
+<Layout title="Капитальный ремонт фасада - ИП Верендеев">
+    <main>
+        <MainPageHeader />
+        <h2>Капитальный ремонт фасада - ИП Верендеев</h2>
+        <GroupedLinks items={reports} showYears={false} />
+
+        <a href="/renewal">Архив всех капитальных ремонтов</a>
+    </main>
+</Layout>
+
+<style>
+    h2 {
+        margin-top: 4rem;
+    }
+
+    main {
+        position: relative;
+    }
+</style>
