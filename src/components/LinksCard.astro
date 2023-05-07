@@ -2,9 +2,11 @@
 export interface Props {
     title: string;
     links: {title: string; url: string}[];
+    subTitle: string;
+    subLinks: {title: string; url: string}[];
 }
 
-const { title, links } = Astro.props;
+const { title, links, subTitle, subLinks } = Astro.props;
 ---
 
 <div class="links-card">
@@ -16,6 +18,16 @@ const { title, links } = Astro.props;
     <ul class="links">
         {links.map(link => (
             <li><a href={link.url}>{link.title}</a></li>
+        ))}
+    </ul>
+    {subTitle && (
+            <div class="header sub-header">
+                {subTitle}
+            </div>
+    )}
+    <ul class="links sub-links">
+        {subLinks.map(link => (
+                <li><a href={link.url}>{link.title}</a></li>
         ))}
     </ul>
 </div>
@@ -47,6 +59,10 @@ const { title, links } = Astro.props;
         margin-bottom: 0.7rem;
     }
 
+    .sub-header {
+        margin-top: 32px;
+    }
+
     @media (max-width: 1200px) {
         .links-card {
             position: relative;
@@ -56,6 +72,10 @@ const { title, links } = Astro.props;
         }
 
         .header {
+            display: none;
+        }
+
+        .sub-header, .sub-links {
             display: none;
         }
     }

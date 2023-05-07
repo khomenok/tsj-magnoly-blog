@@ -17,9 +17,13 @@ const news = await Astro.glob('./news/*/*.md');
 			title="Полезное"
 			links={[
 				{title: 'Собрание 2023', url: '/meetings/2023'},
-				{title: 'Архив собраний', url: '/meetings'},
-				{title: 'Решения судов', url: '/courts'},
 				{title: 'ИП Верендеев - фасад', url: '/renewal/verendeev'},
+				{title: 'Решения судов', url: '/courts'},
+			]}
+			subTitle="Архивы"
+			subLinks={[
+				{title: 'Все собрания', url: '/meetings'},
+				{title: 'Все капитальные ремонты', url: '/renewal'},
 			]}
 		/>
 		<TextCard isDesktopOnly={true}>
