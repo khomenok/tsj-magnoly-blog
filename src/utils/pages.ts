@@ -14,7 +14,6 @@ export const sortByPubDateDesc = (a: MarkdownInstance<PageProps>, b: MarkdownIns
 export const groupByYear = (pages: MarkdownInstance<Record<string, any>>[]) => {
     const years: Record<string, MarkdownInstance<Record<string, any>>[]> = {};
     pages.forEach(page => {
-        console.log(page.frontmatter.pubDate.split('.')[2]);
         const year = page.frontmatter.pubDate.split('.')[2] as string; // todo: add types
         if (!(year in years)) {
             years[year] = [page];

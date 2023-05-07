@@ -3,7 +3,7 @@ import TextCard from "./TextCard.astro";
 export interface Props {
     title: string;
     rates: string[];
-    links: {title: string, href: string}[];
+    links: {title: string, link: string}[];
 }
 
 const { title, rates, links } = Astro.props;
@@ -17,7 +17,7 @@ const { title, rates, links } = Astro.props;
         {links.map((link, idx) => (
             <>
                 {idx > 0 && '  /  '}
-                <a href="/rates" class="link">2022</a>
+                <a href={link.link} class="link">{link.title}</a>
             </>
         ))}
     </div>
