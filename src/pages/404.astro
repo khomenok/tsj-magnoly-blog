@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MainPageHeader from '../components/MainPageHeader.astro';
+import GroupedLinks from "../components/GroupedLinks.astro";
+import TextCard from "../components/TextCard.astro";
+import RatesCard from "../components/RatesCard.astro";
+import LinksCard from "../components/LinksCard.astro";
+
+const news = await Astro.glob('./news/*/*.md');
+
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<MainPageHeader isFull={true} />
+		<LinksCard
+			title="Полезное"
+			links={[
+				{title: 'Собрание 2023', url: '/meetings/2023'},
+				{title: 'ИП Верендеев - фасад', url: '/renewal/verendeev'},
+				{title: 'Решения судов', url: '/courts'},
+			]}
+			subTitle="Архивы"
+			subLinks={[
+				{title: 'Все собрания', url: '/meetings'},
+				{title: 'Все капитальные ремонты', url: '/renewal'},
+			]}
+		/>
+		<TextCard isDesktopOnly={true}>
+			ТСЖ Магнолия создано решением общего собрания многоквартирного дома по адресу <code>г. Мытищи, ул. Колпакова, д.40/3</code>.
+		</TextCard>
+		<RatesCard
+			title="12.2022 - 12.2023:"
+			rates={['⚡️ 5,05 руб./кВт.ч.', '💧 48,14 руб./куб.м.', '🔥 2867,18 руб./Гкал.']}
+		   	links={[
+				{title: 'Подробнее', link: '/rates/2022'},
+				// {title: '2022', link: '/rates/2022'},
+			]}
+		/>
+		<h2>Мы не смогли найти эту страницу!</h2>
+		<p>Пожалуйста, напишите на <a href="mailto:kolpakova40-3@mail.ru">kolpakova40-3@mail.ru</a>, если она потерялась</p>
+	</main>
+</Layout>
+
+<style>
+	h2 {
+		margin-top: 4rem;
+	}
+
+	main {
+		position: relative;
+	}
+
+	@media (max-width: 800px) {
+		h2 {
+			margin-top: 2rem;
+		}
+	}
+</style>
