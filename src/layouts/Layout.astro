@@ -16,7 +16,7 @@ const realTitle = title.includes('Магнолия') ? title : `${title} | Оф�
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{realTitle}</title>
-		<desc>{description || "Здесь мы публикуем самые важные новости о нашем доме и работах по его содержанию"}</desc>
+		<meta name="description" content={description || "Здесь мы публикуем самые важные новости о нашем доме и работах по его содержанию"} />
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript" >
 			(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date(); for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }} k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(48006635, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });

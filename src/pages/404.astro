@@ -1,16 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import MainPageHeader from '../components/MainPageHeader.astro';
-import GroupedLinks from "../components/GroupedLinks.astro";
 import TextCard from "../components/TextCard.astro";
 import RatesCard from "../components/RatesCard.astro";
 import LinksCard from "../components/LinksCard.astro";
 
-const news = await Astro.glob('./news/*/*.md');
-
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Не нашли такое :с">
 	<main>
 		<MainPageHeader isFull={true} />
 		<LinksCard
