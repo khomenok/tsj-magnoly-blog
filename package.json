@@ -1,19 +1,19 @@
 {
-  "name": "my-astro-pdf-renderer",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/mdx": "^0.18.2",
-    "@astrojs/sitemap": "^1.3.1",
-    "@astrojs/vercel": "^3.2.1",
-    "astro": "^2.1.9",
-    "astro-robots-txt": "^0.5.0"
-  }
+	"name": "my-astro-pdf-renderer",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^2.2.0",
+		"@astrojs/sitemap": "^3.1.1",
+		"@astrojs/vercel": "^7.3.5",
+		"astro": "^4.5.5",
+		"astro-robots-txt": "^1.0.0"
+	}
 }
