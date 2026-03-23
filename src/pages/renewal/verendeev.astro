@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import MainPageHeader from '../../components/MainPageHeader.astro';
 import GroupedLinks from "../../components/GroupedLinks.astro";
 
-const reports = await Astro.glob('./verendeev/*.mdx');
+const reports = Object.values(import.meta.glob('./verendeev/*.mdx', { eager: true }));
 
 ---
 

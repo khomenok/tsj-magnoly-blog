@@ -6,7 +6,7 @@ import TextCard from "../components/TextCard.astro";
 import RatesCard from "../components/RatesCard.astro";
 import LinksCard from "../components/LinksCard.astro";
 
-const news = await Astro.glob('./news/*/*.md');
+const news = Object.values(import.meta.glob('./news/*/*.md', { eager: true }));
 
 ---
 
