@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp ~/Downloads/tsj/\"Отчет правления за 2025г.pdf\" /Users/khomenok/Documents/work/tsj-magnoly-blog/public/files/reports/board-report-2025.pdf)",
+      "Bash(cp ~/Downloads/tsj/\"Отчет  Ревизионной комиссии.pdf\" /Users/khomenok/Documents/work/tsj-magnoly-blog/public/files/reports/revision-2025.pdf)",
+      "Bash(cp ~/Downloads/tsj/\"Плвн годовой 2026.pdf\" /Users/khomenok/Documents/work/tsj-magnoly-blog/public/files/reports/plan-2026.pdf)",
+      "Bash(cp ~/Downloads/tsj/\"Смета и структура тарифа на 2026г.pdf\" /Users/khomenok/Documents/work/tsj-magnoly-blog/public/files/reports/estimate-2026.pdf)",
+      "Bash(npx astro:*)"
+    ]
+  }
+}
