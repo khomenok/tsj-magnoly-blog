@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор отопления · Пушкино, МО</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f5f3ee;
+  --bg-card: #fffdf8;
+  --ink: #1a1a1a;
+  --ink-soft: #5a5a5a;
+  --ink-faint: #9a9a9a;
+  --rule: #e5e1d8;
+  --accent-hp: #2d6a4f;
+  --accent-gas: #c1660b;
+  --accent-current: #8b1a1a;
+  --highlight: #fef3c7;
+  --shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.04);
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Inter Tight’, sans-serif;
+background: var(–bg);
+color: var(–ink);
+line-height: 1.5;
+font-size: 15px;
+-webkit-font-smoothing: antialiased;
+}
+
+.container {
+max-width: 1100px;
+margin: 0 auto;
+padding: 48px 32px 96px;
+}
+
+/* ============ Header ============ */
+header {
+margin-bottom: 56px;
+border-bottom: 1px solid var(–rule);
+padding-bottom: 32px;
+}
+
+h1 {
+font-family: ‘Fraunces’, serif;
+font-weight: 500;
+font-size: clamp(32px, 4.5vw, 48px);
+letter-spacing: -0.02em;
+line-height: 1.05;
+margin-bottom: 12px;
+}
+
+h1 em {
+font-style: italic;
+font-variation-settings: “opsz” 144;
+color: var(–accent-hp);
+}
+
+.subtitle {
+color: var(–ink-soft);
+font-size: 16px;
+max-width: 600px;
+}
+
+/* ============ Verdict Hero ============ */
+.verdict {
+background: var(–bg-card);
+border: 1px solid var(–rule);
+border-radius: 4px;
+padding: 40px;
+margin-bottom: 56px;
+box-shadow: var(–shadow);
+}
+
+.verdict-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+font-weight: 500;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–ink-faint);
+margin-bottom: 16px;
+}
+
+.verdict-headline {
+font-family: ‘Fraunces’, serif;
+font-size: clamp(24px, 3.5vw, 34px);
+font-weight: 500;
+line-height: 1.2;
+letter-spacing: -0.015em;
+margin-bottom: 24px;
+}
+
+.verdict-headline strong {
+font-weight: 600;
+font-style: italic;
+}
+
+.payback-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 24px;
+margin-top: 32px;
+padding-top: 32px;
+border-top: 1px solid var(–rule);
+}
+
+@media (max-width: 640px) {
+.payback-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+.payback-item {
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+.payback-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+font-weight: 500;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–ink-faint);
+}
+
+.payback-value {
+font-family: ‘Fraunces’, serif;
+font-size: 32px;
+font-weight: 500;
+font-feature-settings: “tnum”;
+line-height: 1;
+margin-top: 6px;
+}
+
+.payback-value.never { color: var(–ink-faint); font-style: italic; font-size: 22px; }
+.payback-unit {
+font-family: ‘Inter Tight’, sans-serif;
+font-size: 14px;
+color: var(–ink-soft);
+margin-left: 4px;
+font-weight: 400;
+}
+
+.payback-detail {
+font-size: 13px;
+color: var(–ink-soft);
+margin-top: 4px;
+}
+
+/* ============ Inputs ============ */
+.section {
+margin-bottom: 56px;
+}
+
+.section-head {
+display: flex;
+align-items: baseline;
+gap: 16px;
+margin-bottom: 24px;
+}
+
+.section-num {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 12px;
+color: var(–ink-faint);
+font-weight: 500;
+}
+
+.section-title {
+font-family: ‘Fraunces’, serif;
+font-size: 22px;
+font-weight: 500;
+letter-spacing: -0.01em;
+}
+
+.input-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 1px;
+background: var(–rule);
+border: 1px solid var(–rule);
+border-radius: 4px;
+overflow: hidden;
+}
+
+.input-cell {
+background: var(–bg-card);
+padding: 16px 18px;
+display: flex;
+flex-direction: column;
+gap: 6px;
+transition: background 0.15s;
+}
+
+.input-cell:hover { background: #fcfaf3; }
+
+.input-cell label {
+font-size: 12px;
+color: var(–ink-soft);
+font-weight: 500;
+}
+
+.input-cell input {
+background: transparent;
+border: none;
+border-bottom: 1px solid transparent;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 16px;
+font-weight: 500;
+color: var(–ink);
+padding: 4px 0;
+width: 100%;
+font-feature-settings: “tnum”;
+transition: border-color 0.15s;
+}
+
+.input-cell input:focus {
+outline: none;
+border-bottom-color: var(–ink);
+}
+
+.input-cell input:hover {
+border-bottom-color: var(–rule);
+}
+
+.input-hint {
+font-size: 11px;
+color: var(–ink-faint);
+font-style: italic;
+}
+
+.input-unit {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: var(–ink-faint);
+position: absolute;
+right: 18px;
+}
+
+.input-row {
+position: relative;
+}
+
+/* Collapsible advanced */
+details.advanced {
+margin-top: 16px;
+}
+
+details.advanced summary {
+cursor: pointer;
+font-size: 13px;
+color: var(–ink-soft);
+padding: 8px 0;
+user-select: none;
+list-style: none;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+details.advanced summary::-webkit-details-marker { display: none; }
+
+details.advanced summary::before {
+content: ‘+’;
+font-family: ‘JetBrains Mono’, monospace;
+width: 14px;
+display: inline-block;
+color: var(–ink-faint);
+transition: transform 0.2s;
+}
+
+details.advanced[open] summary::before { content: ‘−’; }
+
+details.advanced summary:hover { color: var(–ink); }
+
+details.advanced > .input-grid {
+margin-top: 12px;
+}
+
+/* ============ Charts ============ */
+.chart-card {
+background: var(–bg-card);
+border: 1px solid var(–rule);
+border-radius: 4px;
+padding: 28px;
+box-shadow: var(–shadow);
+margin-bottom: 32px;
+}
+
+.chart-head {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+margin-bottom: 20px;
+flex-wrap: wrap;
+gap: 8px;
+}
+
+.chart-title {
+font-family: ‘Fraunces’, serif;
+font-size: 18px;
+font-weight: 500;
+}
+
+.chart-sub {
+font-size: 12px;
+color: var(–ink-faint);
+font-family: ‘JetBrains Mono’, monospace;
+}
+
+.chart-wrap {
+position: relative;
+height: 380px;
+}
+
+@media (max-width: 640px) {
+.chart-wrap { height: 280px; }
+.container { padding: 32px 20px 64px; }
+.verdict { padding: 24px; }
+}
+
+/* Legend dots */
+.legend {
+display: flex;
+gap: 20px;
+margin-top: 16px;
+flex-wrap: wrap;
+font-size: 13px;
+color: var(–ink-soft);
+}
+
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dot-current { background: var(–accent-current); }
+.dot-hp { background: var(–accent-hp); }
+.dot-gas { background: var(–accent-gas); }
+
+/* ============ Details / Calculations ============ */
+.calc-details {
+margin-top: 16px;
+border-top: 1px solid var(–rule);
+padding-top: 24px;
+}
+
+.calc-details summary {
+cursor: pointer;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–ink-soft);
+padding: 4px 0;
+user-select: none;
+list-style: none;
+}
+
+.calc-details summary::-webkit-details-marker { display: none; }
+
+.calc-details summary::after {
+content: ‘→ показать расчёт’;
+margin-left: 8px;
+color: var(–ink-faint);
+text-transform: none;
+letter-spacing: 0;
+}
+
+.calc-details[open] summary::after { content: ‘↓ скрыть’; }
+
+.calc-table {
+width: 100%;
+margin-top: 16px;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 12px;
+border-collapse: collapse;
+}
+
+.calc-table th, .calc-table td {
+text-align: right;
+padding: 8px 10px;
+border-bottom: 1px solid var(–rule);
+font-feature-settings: “tnum”;
+}
+
+.calc-table th {
+font-weight: 500;
+color: var(–ink-soft);
+text-transform: uppercase;
+font-size: 10px;
+letter-spacing: 0.08em;
+text-align: right;
+}
+
+.calc-table th:first-child, .calc-table td:first-child {
+text-align: left;
+}
+
+.calc-table tr.total {
+font-weight: 500;
+}
+
+.calc-table tr.total td {
+border-top: 2px solid var(–ink);
+border-bottom: none;
+padding-top: 12px;
+}
+
+.formula-block {
+background: #fbf8f0;
+border-left: 2px solid var(–accent-hp);
+padding: 12px 16px;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 12px;
+color: var(–ink-soft);
+margin: 16px 0;
+line-height: 1.7;
+white-space: pre-wrap;
+overflow-x: auto;
+}
+
+.note {
+font-size: 12px;
+color: var(–ink-soft);
+font-style: italic;
+margin-top: 12px;
+line-height: 1.6;
+}
+
+footer {
+margin-top: 80px;
+padding-top: 24px;
+border-top: 1px solid var(–rule);
+font-size: 12px;
+color: var(–ink-faint);
+font-family: ‘JetBrains Mono’, monospace;
+}
+
+.numeric { font-family: ‘JetBrains Mono’, monospace; font-feature-settings: “tnum”; }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Тепловой насос <em>vs</em> газ</h1>
+  <p class="subtitle">Калькулятор окупаемости для частного дома в Пушкино, Московская область. Все цифры можно поменять — графики и выводы пересчитаются сразу.</p>
+</header>
+
+<!-- ====================== VERDICT ====================== -->
+
+<div class="verdict">
+  <div class="verdict-label">Главный вывод</div>
+  <div class="verdict-headline" id="verdict-text">Расчёт идёт…</div>
+
+  <div class="payback-grid">
+    <div class="payback-item">
+      <span class="payback-label">ТН против электрокотла</span>
+      <div><span class="payback-value" id="pb-hp-current">—</span><span class="payback-unit" id="pb-hp-current-unit">лет</span></div>
+      <span class="payback-detail" id="pb-hp-current-detail"></span>
+    </div>
+    <div class="payback-item">
+      <span class="payback-label">Газ против электрокотла</span>
+      <div><span class="payback-value" id="pb-gas-current">—</span><span class="payback-unit" id="pb-gas-current-unit">лет</span></div>
+      <span class="payback-detail" id="pb-gas-current-detail"></span>
+    </div>
+    <div class="payback-item">
+      <span class="payback-label">ТН против газа</span>
+      <div><span class="payback-value" id="pb-hp-gas">—</span><span class="payback-unit" id="pb-hp-gas-unit">лет</span></div>
+      <span class="payback-detail" id="pb-hp-gas-detail"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== CHART 1: Cumulative ====================== -->
+
+<div class="chart-card">
+  <div class="chart-head">
+    <div>
+      <div class="chart-title">Накопительные затраты</div>
+      <div class="chart-sub">с учётом капитальных вложений и инфляции тарифов</div>
+    </div>
+    <div class="chart-sub" id="horizon-label">20 лет</div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="chartCumulative"></canvas>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot dot-current"></span>Электрокотёл</div>
+    <div class="legend-item"><span class="legend-dot dot-hp"></span>Тепловой насос</div>
+    <div class="legend-item"><span class="legend-dot dot-gas"></span>Газовый котёл</div>
+  </div>
+</div>
+
+<!-- ====================== CHART 2: Monthly ====================== -->
+
+<div class="chart-card">
+  <div class="chart-head">
+    <div>
+      <div class="chart-title">Расходы по месяцам</div>
+      <div class="chart-sub">первый год, при текущих тарифах</div>
+    </div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="chartMonthly"></canvas>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot dot-current"></span>Электрокотёл</div>
+    <div class="legend-item"><span class="legend-dot dot-hp"></span>ТН</div>
+    <div class="legend-item"><span class="legend-dot dot-gas"></span>Газ</div>
+  </div>
+
+  <details class="calc-details">
+    <summary>Помесячный расчёт</summary>
+    <div id="monthly-table-wrap"></div>
+  </details>
+</div>
+
+<!-- ====================== INPUTS ====================== -->
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <span class="section-title">Электрокотёл</span>
+  </div>
+  <div class="input-grid">
+    <div class="input-cell">
+      <label>Счёт за декабрь</label>
+      <div class="input-row"><input type="number" id="i_dec_cost" value="30000"><span class="input-unit">₽</span></div>
+      <span class="input-hint">Самый холодный месяц</span>
+    </div>
+    <div class="input-cell">
+      <label>Тариф день</label>
+      <div class="input-row"><input type="number" id="i_day_tariff" value="7.73" step="0.01"><span class="input-unit">₽/кВт·ч</span></div>
+      <span class="input-hint">МО, сельская, 2 зоны</span>
+    </div>
+    <div class="input-cell">
+      <label>Тариф ночь</label>
+      <div class="input-row"><input type="number" id="i_night_tariff" value="3.32" step="0.01"><span class="input-unit">₽/кВт·ч</span></div>
+      <span class="input-hint">23:00 — 07:00</span>
+    </div>
+    <div class="input-cell">
+      <label>Инфляция тарифа</label>
+      <div class="input-row"><input type="number" id="i_elec_inflation" value="10" step="0.5"><span class="input-unit">%/год</span></div>
+      <span class="input-hint">Мосэнергосбыт: ~9–11%</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <span class="section-title">Тепловой насос</span>
+  </div>
+  <div class="input-grid">
+    <div class="input-cell">
+      <label>Стоимость с монтажом</label>
+      <div class="input-row"><input type="number" id="i_hp_cost" value="400000" step="10000"><span class="input-unit">₽</span></div>
+    </div>
+    <div class="input-cell">
+      <label>Доп. подключение электричества</label>
+      <div class="input-row"><input type="number" id="i_hp_conn" value="0" step="10000"><span class="input-unit">₽</span></div>
+      <span class="input-hint">Если нужно увеличить мощность</span>
+    </div>
+    <div class="input-cell">
+      <label>Буфер: объём</label>
+      <div class="input-row"><input type="number" id="i_buffer_l" value="500" step="50"><span class="input-unit">л</span></div>
+    </div>
+    <div class="input-cell">
+      <label>Буфер: ΔT</label>
+      <div class="input-row"><input type="number" id="i_buffer_dt" value="25" step="1"><span class="input-unit">°C</span></div>
+      <span class="input-hint">Разность температур воды</span>
+    </div>
+  </div>
+
+  <details class="advanced">
+    <summary>COP при разных температурах</summary>
+    <div class="input-grid">
+      <div class="input-cell">
+        <label>COP при +7 °C</label>
+        <div class="input-row"><input type="number" id="i_cop_7" value="4.5" step="0.1"></div>
+      </div>
+      <div class="input-cell">
+        <label>COP при −7 °C</label>
+        <div class="input-row"><input type="number" id="i_cop_m7" value="3.0" step="0.1"></div>
+      </div>
+      <div class="input-cell">
+        <label>COP при −15 °C</label>
+        <div class="input-row"><input type="number" id="i_cop_m15" value="2.0" step="0.1"></div>
+      </div>
+      <div class="input-cell">
+        <label>COP при −25 °C</label>
+        <div class="input-row"><input type="number" id="i_cop_m25" value="1.5" step="0.1"></div>
+        <span class="input-hint">Ниже — ТЭН (COP=1)</span>
+      </div>
+    </div>
+  </details>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <span class="section-title">Газовое отопление</span>
+  </div>
+  <div class="input-grid">
+    <div class="input-cell">
+      <label>Цена газа</label>
+      <div class="input-row"><input type="number" id="i_gas_price" value="8.51" step="0.01"><span class="input-unit">₽/м³</span></div>
+      <span class="input-hint">МО с 01.01.2026</span>
+    </div>
+    <div class="input-cell">
+      <label>Инфляция цены газа</label>
+      <div class="input-row"><input type="number" id="i_gas_inflation" value="8.5" step="0.5"><span class="input-unit">%/год</span></div>
+    </div>
+    <div class="input-cell">
+      <label>Котёл с монтажом</label>
+      <div class="input-row"><input type="number" id="i_gas_cost" value="800000" step="10000"><span class="input-unit">₽</span></div>
+    </div>
+    <div class="input-cell">
+      <label>Подключение газа</label>
+      <div class="input-row"><input type="number" id="i_gas_conn" value="200000" step="10000"><span class="input-unit">₽</span></div>
+      <span class="input-hint">Сильно зависит от расстояния</span>
+    </div>
+  </div>
+
+  <details class="advanced">
+    <summary>Параметры котла</summary>
+    <div class="input-grid">
+      <div class="input-cell">
+        <label>КПД газового котла</label>
+        <div class="input-row"><input type="number" id="i_gas_eff" value="92" step="1"><span class="input-unit">%</span></div>
+        <span class="input-hint">Конденсационный: 90–96%</span>
+      </div>
+      <div class="input-cell">
+        <label>Теплотворность газа</label>
+        <div class="input-row"><input type="number" id="i_gas_kwh_m3" value="9.45" step="0.05"><span class="input-unit">кВт·ч/м³</span></div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <span class="section-title">Горизонт</span>
+  </div>
+  <div class="input-grid">
+    <div class="input-cell">
+      <label>Срок расчёта</label>
+      <div class="input-row"><input type="number" id="i_years" value="15" step="1" min="1" max="40"><span class="input-unit">лет</span></div>
+    </div>
+    <div class="input-cell">
+      <label>Доля потребления днём (электрокотёл)</label>
+      <div class="input-row"><input type="number" id="i_day_share" value="50" step="5"><span class="input-unit">%</span></div>
+      <span class="input-hint">Без буфера ≈ 50%</span>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== Methodology ====================== -->
+
+<details class="calc-details" style="margin-top: 48px;">
+  <summary style="font-size: 12px;">Методика и допущения</summary>
+
+  <div style="margin-top: 24px; max-width: 720px; color: var(--ink-soft); line-height: 1.7;">
+    <p style="margin-bottom: 16px;"><strong style="color: var(--ink);">Потребление тепла по месяцам</strong> рассчитывается через градусо-часы. Считаем, что нагрузка пропорциональна разности (18°C − средняя температура месяца). Декабрь берётся как опорный месяц с известным счётом.</p>
+
+```
+<p style="margin-bottom: 16px;"><strong style="color: var(--ink);">Средние температуры в Пушкино</strong> (нормы Росгидромета): январь −8,5°C, февраль −8,0°C, март −2,5°C, апрель +6,5°C, май +13,0°C, июнь +17,5°C, июль +19,5°C, август +17,5°C, сентябрь +11,5°C, октябрь +5,0°C, ноябрь −1,5°C, декабрь −6,5°C.</p>
+
+<p style="margin-bottom: 16px;"><strong style="color: var(--ink);">COP теплового насоса</strong> линейно интерполируется между опорными точками. Ниже −25°C считается работа ТЭН с COP = 1.</p>
+
+<p style="margin-bottom: 16px;"><strong style="color: var(--ink);">Распределение день/ночь для ТН</strong>: буфер заряжается раз в сутки на полный объём (один цикл за ночь). Если месячное потребление меньше, чем может покрыть буфер, всё уходит в ночь. Остальное — в день.</p>
+
+<div class="formula-block">Полезная ёмкость буфера = литры × ΔT × 4,186 / 3600 кВт·ч (теплоты)
+```
+
+Ночное тепло за месяц = min(буфер × 30 дней, общее тепло)
+Ночное электричество = ночное тепло / COP
+Дневное электричество = общее электричество − ночное
+
+Газ (м³) = тепло (кВт·ч) / (теплотворность × КПД котла)</div>
+
+```
+<p style="margin-bottom: 16px;"><strong style="color: var(--ink);">Источники тарифов:</strong> электричество — Распоряжение Комитета по ценам и тарифам МО № 396-Р от 29.12.2025 (сельская местность, электроотопление, 2 зоны, 1-й диапазон). Газ — Распоряжение № 354-Р от 19.12.2025.</p>
+
+<p><strong style="color: var(--ink);">Что НЕ учтено:</strong> сервисное обслуживание, замена оборудования, рост стоимости подключения за период, дисконтирование (NPV). Это упрощённая модель прямых денежных потоков в номинальных рублях.</p>
+```
+
+  </div>
+</details>
+
+<footer>
+  Калькулятор обновляется при каждом изменении параметров · все расчёты выполняются в браузере
+</footer>
+
+</div>
+
+<script>
+// ============================================================
+// Climate data — Pushkino, MO
+// ============================================================
+const MONTHS = [
+  {name: 'Янв', t: -8.5},
+  {name: 'Фев', t: -8.0},
+  {name: 'Мар', t: -2.5},
+  {name: 'Апр', t: 6.5},
+  {name: 'Май', t: 13.0},
+  {name: 'Июн', t: 17.5},
+  {name: 'Июл', t: 19.5},
+  {name: 'Авг', t: 17.5},
+  {name: 'Сен', t: 11.5},
+  {name: 'Окт', t: 5.0},
+  {name: 'Ноя', t: -1.5},
+  {name: 'Дек', t: -6.5},
+];
+const INDOOR = 18;
+
+// ============================================================
+// Read inputs
+// ============================================================
+function readInputs() {
+  const v = id => parseFloat(document.getElementById(id).value) || 0;
+  return {
+    decCost: v('i_dec_cost'),
+    dayShare: v('i_day_share') / 100,
+    dayTariff: v('i_day_tariff'),
+    nightTariff: v('i_night_tariff'),
+    elecInflation: v('i_elec_inflation') / 100,
+    hpCost: v('i_hp_cost'),
+    hpConn: v('i_hp_conn'),
+    bufferL: v('i_buffer_l'),
+    bufferDT: v('i_buffer_dt'),
+    cop7: v('i_cop_7'),
+    copM7: v('i_cop_m7'),
+    copM15: v('i_cop_m15'),
+    copM25: v('i_cop_m25'),
+    gasPrice: v('i_gas_price'),
+    gasInflation: v('i_gas_inflation') / 100,
+    gasCost: v('i_gas_cost'),
+    gasConn: v('i_gas_conn'),
+    gasEff: v('i_gas_eff') / 100,
+    gasKwhM3: v('i_gas_kwh_m3'),
+    years: Math.max(1, Math.min(40, parseInt(document.getElementById('i_years').value) || 20)),
+  };
+}
+
+// COP interpolation
+function copAt(t, p) {
+  if (t >= 7) return p.cop7;
+  if (t >= -7) return p.copM7 + (t - (-7))/14 * (p.cop7 - p.copM7);
+  if (t >= -15) return p.copM15 + (t - (-15))/8 * (p.copM7 - p.copM15);
+  if (t >= -25) return p.copM25 + (t - (-25))/10 * (p.copM15 - p.copM25);
+  return 1;
+}
+
+// ============================================================
+// Calculations
+// ============================================================
+function compute(p) {
+  const avgTariff = p.dayShare * p.dayTariff + (1 - p.dayShare) * p.nightTariff;
+  const decKwh = avgTariff > 0 ? p.decCost / avgTariff : 0;
+
+  // ΔT per month
+  const dts = MONTHS.map(m => Math.max(0, INDOOR - m.t));
+  const decDT = dts[11];
+
+  // kWh per month (scaled so December matches)
+  const monthlyHeatKwh = dts.map(dt => decDT > 0 ? (dt / decDT) * decKwh : 0);
+  const annualHeatKwh = monthlyHeatKwh.reduce((a, b) => a + b, 0);
+
+  // Buffer capacity (kWh thermal per full charge)
+  const bufferKwh = p.bufferL * p.bufferDT * 4.186 / 3600;
+
+  // Per month: HP electricity (split night/day)
+  const monthly = MONTHS.map((m, i) => {
+    const heat = monthlyHeatKwh[i];
+    const cop = copAt(m.t, p);
+    const hpElecTotal = cop > 0 ? heat / cop : 0;
+
+    // Night thermal capacity per month = buffer × 30 (one charge/day)
+    const nightThermal = Math.min(bufferKwh * 30, heat);
+    const nightElec = cop > 0 ? nightThermal / cop : 0;
+    const dayElec = Math.max(0, hpElecTotal - nightElec);
+
+    // Costs
+    const currentCost = heat * (p.dayShare * p.dayTariff + (1 - p.dayShare) * p.nightTariff);
+    const hpCost = nightElec * p.nightTariff + dayElec * p.dayTariff;
+    const gasM3 = (p.gasKwhM3 * p.gasEff > 0) ? heat / (p.gasKwhM3 * p.gasEff) : 0;
+    const gasCost = gasM3 * p.gasPrice;
+
+    return { month: m.name, t: m.t, dt: dts[i], heat, cop, nightElec, dayElec, hpElecTotal, currentCost, gasM3, hpCost, gasCost };
+  });
+
+  const yearCurrent = monthly.reduce((a, m) => a + m.currentCost, 0);
+  const yearHP = monthly.reduce((a, m) => a + m.hpCost, 0);
+  const yearGas = monthly.reduce((a, m) => a + m.gasCost, 0);
+
+  // Cumulative over horizon. Year 0 = CAPEX baseline.
+  const horizon = p.years;
+  const acc = { current: [0], hp: [p.hpCost + p.hpConn], gas: [p.gasCost + p.gasConn] };
+  const annual = { current: [], hp: [], gas: [] };
+  let curC = yearCurrent, curH = yearHP, curG = yearGas;
+  for (let y = 1; y <= horizon; y++) {
+    annual.current.push(curC);
+    annual.hp.push(curH);
+    annual.gas.push(curG);
+    acc.current.push(acc.current[y-1] + curC);
+    acc.hp.push(acc.hp[y-1] + curH);
+    acc.gas.push(acc.gas[y-1] + curG);
+    curC *= (1 + p.elecInflation);
+    curH *= (1 + p.elecInflation);
+    curG *= (1 + p.gasInflation);
+  }
+
+  // Break-even years: first y where alternative cumulative < baseline cumulative
+  function breakEven(altArr, baseArr) {
+    for (let y = 1; y < altArr.length; y++) {
+      if (altArr[y] < baseArr[y]) return y;
+    }
+    return null;
+  }
+
+  const beHpVsCurrent = breakEven(acc.hp, acc.current);
+  const beGasVsCurrent = breakEven(acc.gas, acc.current);
+  const beHpVsGas = breakEven(acc.hp, acc.gas);
+
+  return {
+    avgTariff, decKwh, annualHeatKwh, bufferKwh,
+    monthly, yearCurrent, yearHP, yearGas,
+    acc, annual, horizon,
+    beHpVsCurrent, beGasVsCurrent, beHpVsGas,
+  };
+}
+
+// ============================================================
+// Formatting
+// ============================================================
+const fmt = {
+  rub: n => Math.round(n).toLocaleString('ru-RU') + ' ₽',
+  num: n => Math.round(n).toLocaleString('ru-RU'),
+  dec: (n, d=2) => n.toLocaleString('ru-RU', {minimumFractionDigits: d, maximumFractionDigits: d}),
+};
+
+// ============================================================
+// Charts
+// ============================================================
+let chartCum = null;
+let chartMon = null;
+
+function renderCharts(r) {
+  const labels = Array.from({length: r.horizon + 1}, (_, i) => i);
+  const ctx1 = document.getElementById('chartCumulative').getContext('2d');
+
+  const datasets = [
+    {
+      label: 'Электрокотёл',
+      data: r.acc.current,
+      borderColor: '#8b1a1a',
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      tension: 0.15,
+    },
+    {
+      label: 'ТН',
+      data: r.acc.hp,
+      borderColor: '#2d6a4f',
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      tension: 0.15,
+    },
+    {
+      label: 'Газ',
+      data: r.acc.gas,
+      borderColor: '#c1660b',
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      tension: 0.15,
+    },
+  ];
+
+  if (chartCum) chartCum.destroy();
+  chartCum = new Chart(ctx1, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          padding: 12,
+          titleFont: { family: 'JetBrains Mono', size: 11 },
+          bodyFont: { family: 'Inter Tight', size: 13 },
+          callbacks: {
+            title: items => `Год ${items[0].label}`,
+            label: ctx => `${ctx.dataset.label}: ${fmt.rub(ctx.parsed.y)}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Год', color: '#9a9a9a', font: { family: 'JetBrains Mono', size: 10 } },
+          ticks: { color: '#9a9a9a', font: { family: 'JetBrains Mono', size: 11 } },
+          grid: { color: '#e5e1d8', drawTicks: false },
+        },
+        y: {
+          ticks: {
+            color: '#9a9a9a',
+            font: { family: 'JetBrains Mono', size: 11 },
+            callback: v => (v / 1000000).toFixed(1) + ' млн',
+          },
+          grid: { color: '#e5e1d8', drawTicks: false },
+        },
+      },
+    },
+  });
+
+  // Monthly chart
+  const ctx2 = document.getElementById('chartMonthly').getContext('2d');
+  const monthLabels = r.monthly.map(m => m.month);
+  const dsMonthly = [
+    { label: 'Электрокотёл', data: r.monthly.map(m => m.currentCost), backgroundColor: '#8b1a1a' },
+    { label: 'ТН', data: r.monthly.map(m => m.hpCost), backgroundColor: '#2d6a4f' },
+    { label: 'Газ', data: r.monthly.map(m => m.gasCost), backgroundColor: '#c1660b' },
+  ];
+
+  if (chartMon) chartMon.destroy();
+  chartMon = new Chart(ctx2, {
+    type: 'bar',
+    data: { labels: monthLabels, datasets: dsMonthly },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          padding: 12,
+          titleFont: { family: 'JetBrains Mono', size: 11 },
+          bodyFont: { family: 'Inter Tight', size: 13 },
+          callbacks: {
+            label: ctx => `${ctx.dataset.label}: ${fmt.rub(ctx.parsed.y)}`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: { color: '#9a9a9a', font: { family: 'JetBrains Mono', size: 11 } },
+          grid: { display: false },
+        },
+        y: {
+          ticks: {
+            color: '#9a9a9a',
+            font: { family: 'JetBrains Mono', size: 11 },
+            callback: v => (v / 1000).toFixed(0) + ' k',
+          },
+          grid: { color: '#e5e1d8', drawTicks: false },
+        },
+      },
+    },
+  });
+}
+
+// ============================================================
+// Verdict logic
+// ============================================================
+function buildVerdict(r) {
+  const annualBest = Math.min(r.yearHP, r.yearGas);
+  const annualWorst = r.yearCurrent;
+  const annualSavings = annualWorst - annualBest;
+
+  // Pick most favorable option over horizon
+  const finalCurrent = r.acc.current[r.horizon];
+  const finalHP = r.acc.hp[r.horizon];
+  const finalGas = r.acc.gas[r.horizon];
+
+  let winner, winnerName, winnerColor;
+  if (finalHP <= finalGas && finalHP <= finalCurrent) {
+    winner = finalHP; winnerName = 'тепловой насос'; winnerColor = 'var(--accent-hp)';
+  } else if (finalGas <= finalCurrent) {
+    winner = finalGas; winnerName = 'газовое отопление'; winnerColor = 'var(--accent-gas)';
+  } else {
+    winner = finalCurrent; winnerName = 'электрокотёл'; winnerColor = 'var(--accent-current)';
+  }
+
+  const saveVsCurrent = finalCurrent - winner;
+
+  let text;
+  if (winnerName === 'электрокотёл') {
+    text = `За ${r.horizon} лет ни один из вариантов <strong>не окупится</strong> при текущих параметрах.`;
+  } else {
+    text = `За ${r.horizon} лет дешевле всего обойдётся <strong style="color: ${winnerColor};">${winnerName}</strong> — экономия ${fmt.rub(saveVsCurrent)} против электрокотла.`;
+  }
+
+  document.getElementById('verdict-text').innerHTML = text;
+  document.getElementById('horizon-label').textContent = r.horizon + ' лет';
+
+  function setPb(idVal, idUnit, idDetail, year, finalAlt, finalBase) {
+    const elV = document.getElementById(idVal);
+    const elU = document.getElementById(idUnit);
+    const elD = document.getElementById(idDetail);
+    if (year === null) {
+      elV.textContent = '—';
+      elV.classList.add('never');
+      elU.textContent = 'не окупится';
+      elD.textContent = `за ${r.horizon} лет`;
+    } else {
+      elV.textContent = year;
+      elV.classList.remove('never');
+      elU.textContent = year === 1 ? 'год' : (year < 5 ? 'года' : 'лет');
+      const diff = finalBase - finalAlt;
+      elD.innerHTML = diff > 0
+        ? `экономия ${fmt.rub(diff)} за ${r.horizon} лет`
+        : `проигрыш ${fmt.rub(-diff)} за ${r.horizon} лет`;
+    }
+  }
+
+  setPb('pb-hp-current', 'pb-hp-current-unit', 'pb-hp-current-detail',
+        r.beHpVsCurrent, finalHP, finalCurrent);
+  setPb('pb-gas-current', 'pb-gas-current-unit', 'pb-gas-current-detail',
+        r.beGasVsCurrent, finalGas, finalCurrent);
+  setPb('pb-hp-gas', 'pb-hp-gas-unit', 'pb-hp-gas-detail',
+        r.beHpVsGas, finalHP, finalGas);
+}
+
+// ============================================================
+// Monthly calc table
+// ============================================================
+function buildMonthlyTable(r) {
+  let html = `<table class="calc-table">
+    <thead><tr>
+      <th>Месяц</th><th>t°</th><th>кВт·ч тепла</th><th>COP</th>
+      <th>ТН: ночь</th><th>ТН: день</th>
+      <th>Электрокотёл</th><th>ТН</th><th>Газ (м³)</th><th>Газ</th>
+    </tr></thead><tbody>`;
+  r.monthly.forEach(m => {
+    html += `<tr>
+      <td>${m.month}</td>
+      <td>${fmt.dec(m.t, 1)}</td>
+      <td>${fmt.num(m.heat)}</td>
+      <td>${fmt.dec(m.cop, 2)}</td>
+      <td>${fmt.num(m.nightElec)}</td>
+      <td>${fmt.num(m.dayElec)}</td>
+      <td>${fmt.num(m.currentCost)}</td>
+      <td>${fmt.num(m.hpCost)}</td>
+      <td>${fmt.num(m.gasM3)}</td>
+      <td>${fmt.num(m.gasCost)}</td>
+    </tr>`;
+  });
+  html += `<tr class="total">
+    <td>Год</td><td>—</td>
+    <td>${fmt.num(r.annualHeatKwh)}</td><td>—</td>
+    <td>${fmt.num(r.monthly.reduce((a,m)=>a+m.nightElec,0))}</td>
+    <td>${fmt.num(r.monthly.reduce((a,m)=>a+m.dayElec,0))}</td>
+    <td>${fmt.num(r.yearCurrent)}</td>
+    <td>${fmt.num(r.yearHP)}</td>
+    <td>${fmt.num(r.monthly.reduce((a,m)=>a+m.gasM3,0))}</td>
+    <td>${fmt.num(r.yearGas)}</td>
+  </tr>`;
+  html += `</tbody></table>
+    <div class="note">Цифры в столбцах ТН/Электрокотёл/Газ — в рублях за месяц.
+    Средний тариф для электрокотла: ${fmt.dec(r.avgTariff, 2)} ₽/кВт·ч.
+    Полезная ёмкость буфера: ${fmt.dec(r.bufferKwh, 1)} кВт·ч теплоты.</div>`;
+  document.getElementById('monthly-table-wrap').innerHTML = html;
+}
+
+// ============================================================
+// Main update
+// ============================================================
+function update() {
+  const inputs = readInputs();
+  const r = compute(inputs);
+  renderCharts(r);
+  buildVerdict(r);
+  buildMonthlyTable(r);
+}
+
+// Hook up inputs
+document.querySelectorAll('input').forEach(el => {
+  el.addEventListener('input', update);
+});
+
+// Initial render
+update();
+</script>
+
+</body>
+</html>
